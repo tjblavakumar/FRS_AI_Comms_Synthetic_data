@@ -1,0 +1,139 @@
+bedrock:
+  # AWS Bedrock model configuration
+  # Options: global.anthropic.claude-sonnet-4-6, global.anthropic.claude-sonnet-4-5-20250929-v1:0, global.anthropic.claude-opus-4-6-v1
+  model_id: "global.anthropic.claude-sonnet-4-6"
+  region: "us-east-1"
+  max_tokens: 4096
+  # Batch size: number of records to generate per Bedrock API call
+  batch_size: 5
+
+data:
+  date_range:
+    start: "2022-01-01"
+    end: "2025-12-31"
+  context: "Federal Reserve System / Federal Reserve Bank of San Francisco (FRBSF)"
+
+categories:
+  inquiries:
+    enabled: true
+    count: 20
+    sources:
+      - media
+      - public
+      - stakeholder
+    channels:
+      - email
+      - web_form
+      - letter
+      - phone
+    topics:
+      - monetary_policy
+      - interest_rates
+      - inflation
+      - employment
+      - banking_regulation
+      - financial_stability
+      - quantitative_easing
+      - federal_funds_rate
+      - economic_outlook
+      - consumer_protection
+    priorities:
+      - high
+      - medium
+      - low
+
+  social_media:
+    enabled: true
+    count: 20
+    platforms:
+      - twitter
+      - reddit
+      - linkedin
+    author_types:
+      - journalist
+      - financial_analyst
+      - economist
+      - public
+      - policy_commentator
+    sentiments:
+      - positive
+      - negative
+      - neutral
+    topics:
+      - fed_rate_decision
+      - inflation_data
+      - employment_report
+      - fomc_meeting
+      - quantitative_tightening
+      - bank_supervision
+      - economic_forecast
+      - fed_chair_speech
+      - treasury_yields
+      - financial_regulation
+
+  news_articles:
+    enabled: true
+    count: 20
+    sources:
+      - reuters
+      - bloomberg
+      - wall_street_journal
+      - financial_times
+      - cnbc
+      - associated_press
+      - new_york_times
+      - marketwatch
+    sentiments:
+      - positive
+      - negative
+      - neutral
+    topics:
+      - monetary_policy
+      - interest_rates
+      - inflation
+      - employment
+      - banking_regulation
+      - financial_stability
+      - fomc_decisions
+      - economic_indicators
+      - fed_communications
+      - global_economy
+
+  response_templates:
+    enabled: true
+    count: 5
+    inquiry_categories:
+      - monetary_policy
+      - interest_rates
+      - inflation
+      - employment
+      - banking_regulation
+      - financial_stability
+      - general_inquiry
+      - media_request
+      - foia_request
+      - congressional_inquiry
+    tones:
+      - formal
+      - empathetic
+      - informational
+      - technical
+
+  insight_reports:
+    enabled: true
+    count: 5
+    report_types:
+      - daily_summary
+      - weekly_analysis
+      - monthly_trend
+      - incident_report
+      - risk_assessment
+
+output:
+  format: json
+  directory: "./output"
+  # Whether to pretty-print JSON output
+  pretty: true
+  # Add timestamp to filenames (e.g., inquiries_20260409_102930.json)
+  # Set to false to overwrite existing files instead
+  add_timestamp: true
