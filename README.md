@@ -2,7 +2,15 @@
 
 Synthetic data generator for Central Bank Communications AI — built for the Federal Reserve System / FRBSF hackathon use case.
 
+<<<<<<< HEAD
 Generates realistic synthetic data across 5 categories using AWS Bedrock (Claude Sonnet/Opus), designed to train and evaluate NLP models for text classification, sentiment analysis, topic modeling, and LLM-based draft generation.
+=======
+Generates realistic synthetic data across 5 categories using **multiple LLM backends**:
+- **Streamlit UI** (`app.py`): Auto-detects and uses local Ollama → OpenAI → AWS Bedrock
+- **CLI** (`python -m datagen`): AWS Bedrock only
+
+Designed to train and evaluate NLP models for text classification, sentiment analysis, topic modeling, and LLM-based draft generation.
+>>>>>>> 17454bf (Add streamlit UI with multi backend LLM support)
 
 ## Data Categories
 
@@ -17,10 +25,33 @@ Generates realistic synthetic data across 5 categories using AWS Bedrock (Claude
 ## Prerequisites
 
 - **Python 3.10+**
+<<<<<<< HEAD
 - **AWS CLI** configured with credentials that have Bedrock access
 - **Bedrock model access** enabled for Claude Sonnet 4.6 (or other Claude models) in your AWS account
 
 ### AWS Setup
+=======
+
+### LLM Backend Options (choose one or more)
+
+#### Option 1: Local Ollama (Recommended for Development)
+- **Ollama** installed on localhost or accessible on network
+- Example models: `gemma4:e4b`, `llama3:70b`, `mistral-large`
+- No authentication required; runs fully locally
+- Best for rapid iteration and cost-free testing
+
+#### Option 2: OpenAI API
+- **OpenAI API key** (set in `.env` or Streamlit UI)
+- Uses `gpt-4o` by default (configurable)
+- Useful for testing with a different LLM provider
+
+#### Option 3: AWS Bedrock (Required for CLI; optional for UI)
+- **AWS CLI** configured with credentials that have Bedrock access
+- **Bedrock model access** enabled for Claude Sonnet 4.6 (or other Claude models)
+- Used as fallback in Streamlit UI if Ollama and OpenAI unavailable
+
+### AWS Bedrock Setup (if using)
+>>>>>>> 17454bf (Add streamlit UI with multi backend LLM support)
 
 1. **Configure AWS credentials** (choose one method):
 
@@ -61,6 +92,7 @@ Generates realistic synthetic data across 5 categories using AWS Bedrock (Claude
    - Enable **Anthropic Claude** models (Claude Sonnet 4.6, Claude Opus 4.6, etc.)
    - Model access is granted at the account level and may take a few minutes to activate
 
+<<<<<<< HEAD
 ## Installation
 
 ```bash
@@ -76,6 +108,51 @@ source venv/bin/activate  # Linux/Mac
 pip install -r requirements.txt
 
 # Or install as a package
+=======
+
+# Create .env file from template
+cp .env.example .env
+# Edit .env with your credentials (Ollama URL, OpenAI key, AWS profile, etc.)
+```
+
+## Quick Start
+
+### Option A: Streamlit UI (Recommended - Multi-backend)
+
+```bash
+# 1. Set up credentials in .env file
+#    Edit the file or just use defaults
+cat .env.example > .env
+# (Optional: edit .env with your Ollama host, OpenAI key, or AWS profile)
+
+# 2. Start the Streamlit app
+streamlit run app.py
+
+# 3. Open browser at http://localhost:8501
+# 4.Configuration Files
+
+#### `.env` — Environment Variables
+
+Copy `.env.example` to `.env` and fill in your backend credentials:
+
+```bash
+cp .env.example .env
+# Edit .env with your values
+```
+
+Supported variables:
+- `OLLAMA_HOST` — base URL of Ollama server (e.g., `http://192.168.68.96:11434`)
+- `OLLAMA_MODEL` — model tag (e.g., `gemma4:e4b`)
+- `OPENAI_API_KEY` — your OpenAI API key
+- `OPENAI_MODEL` — OpenAI model name (default: `gpt-4o`)
+- `AWS_PROFILE` — AWS SSO profile name
+- `AWS_REGION` — AWS region (default: `us-east-1`)
+- `BEDROCK_MODEL_ID` — Bedrock model ID (default: `global.anthropic.claude-sonnet-4-6`)
+
+See `.env.example` for full documentation and examples.
+
+#### `config.yaml` — Data Generation Settingsa package
+>>>>>>> 17454bf (Add streamlit UI with multi backend LLM support)
 pip install -e .
 ```
 
@@ -215,6 +292,7 @@ output/
   "priority": "high",
   "timestamp": "2023-06-15T14:30:00Z",
   "sender_name": "Jane Smith",
+<<<<<<< HEAD
   "sender_organization": "Reuters"
 }
 ```
@@ -235,6 +313,32 @@ output/
   "reply_count": 18,
   "repost_count": 67,
   "timestamp": "2023-09-20T18:05:00Z",
+=======
+  "sapp.py                  # Streamlit web UI (multi-backend support)
+├── pyproject.toml          # Package configuration
+├── requirements.txt        # Python dependencies
+├── config.yaml             # Data generation configuration
+├── .env                    # Environment variables (credentials) — NOT committed
+├── .env.example            # Template for .env file
+├── README.md               # This file
+├── src/
+│   └── datagen/
+│       ├── __init__.py
+│       ├── main.py             # CLI entrypoint (Bedrock-only)
+│       ├── config.py           # Config loading & validation
+│       ├── bedrock_client.py   # AWS Bedrock client
+│       ├── llm_client.py       # Multi-backend LLM client (Ollama, OpenAI, Bedrock)
+│       ├── utils.py            # Utility functions
+│       └── generators/
+│           ├── __init__.py
+│           ├── base.py               # Abstract base generator
+│           ├── inquiries.py          # Incoming communications
+│           ├── social_media.py       # Social media posts
+│           ├── news_articles.py      # News articles
+│           ├── response_templates.py # Response templates
+│           └── insight_reports.py    # Insight reports
+└── output/                 # Generated JSON files (local, not committed)
+>>>>>>> 17454bf (Add streamlit UI with multi backend LLM support)
   "hashtags": ["#FOMC", "#FedRate", "#MonetaryPolicy"]
 }
 ```
@@ -281,3 +385,62 @@ With default settings (1,780 total records, batch_size=10):
 | `ThrottlingException` | Reduce `batch_size` in config or add retry delays |
 | `ValidationException` | Check `model_id` is correct and available in your region |
 | JSON parse errors | Reduce `batch_size` to get more reliable responses |
+<<<<<<< HEAD
+=======
+### Ollama Connection Issues (Streamlit UI)
+
+| Issue | Solution |
+|---|---|
+| **405 Method Not Allowed** | Ensure you're entering base URL only: `http://192.168.68.96:11434` (NOT including `/api/chat`) |
+| **Connection refused** | Verify Ollama is running; test with `curl http://192.168.68.96:11434/api/tags` |
+### AWS Bedrock (CLI & Streamlit fallback)
+With default settings (1,780 total records, batch_size=10):
+- ~178 Bedrock API calls
+- Estimated cost: ~$5-15 depending on model (Sonnet is cheaper than Opus)
+- Generation time: ~15-30 minutes
+
+### Local Ollama (Streamlit UI)
+- **Cost: Free** — runs entirely locally, no API charges
+- Generation time: ~5-60 minutes depending on model size and hardware
+- Requires adequate VRAM for model size (e.g., 8GB+ for 8B models)
+
+### OpenAI (Streamlit UI)
+- **Cost: ~$0.50-$2** per 1,780 records using GPT-4o
+- Generation time: ~10-20 minutes
+- Depends on exact token counts for your prompts
+
+## Feature Comparison
+
+| Feature | Streamlit UI | CLI |
+|---|---|---|
+| Multi-backend support | ✅ Ollama, OpenAI, Bedrock | ❌ Bedrock only |
+| Web UI | ✅ Yes (http://localhost:8501) | ❌ Terminal only |
+| Live log streaming | ✅ Yes, real-time | ✅ Terminal output |
+| Category selection | ✅ UI toggles per category | ✅ CLI flags |
+| JSON output viewer | ✅ Preview & download in UI | ❌ Manual file browse |
+| Connection status banner | ✅ Visual icon + details | N/A |
+| Auto-detect backend | ✅ Yes, priority order | N/A |
+| Configuration | ✅ .env + UI overrides | ✅ .env + config.yaml |
+| Issue | Solution |
+|---|---|
+| **Ollama produces malformed JSON** | Use larger models (27B+): `llama3:70b`, `mistral-large`. Gemma 4/8B models may fail. |
+| **Timeout errors** | Increase `max_tokens` in config; for Ollama, reduce `batch_size` |
+| **OpenAI rate limits** | Reduce `batch_size` in Streamlit UI or add delays between requests |
+
+### AWS Bedrock Issues (CLI & UI fallback)
+
+| Issue | Solution |
+|---|---|
+| **AccessDeniedException** | Enable Bedrock model access in AWS Console: Bedrock → Model Access |
+| **ExpiredTokenException** | Re-run `aws configure sso` or refresh SSO session |
+| **ValidationException** | Check `model_id` is correct and available in your region |
+| **ThrottlingException** | Reduce `batch_size` in config or add retry delays |
+
+### Streamlit UI Issues
+
+| Issue | Solution |
+|---|---|
+| **"No LLM backend connected" banner** | Click Detect / Re-detect, check sidebar settings, verify .env file values |
+| **Auto-detect keeps failing** | Check firewall, network connectivity, and exact host/port in `.env` |
+| **Live logs not showing** | Ensure `python-dotenv` is installed: `pip install -r requirements.txt`
+>>>>>>> 17454bf (Add streamlit UI with multi backend LLM support)
