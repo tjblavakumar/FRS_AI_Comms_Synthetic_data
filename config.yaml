@@ -16,11 +16,7 @@ data:
 categories:
   inquiries:
     enabled: true
-<<<<<<< HEAD
-    count: 20
-=======
     count: 5
->>>>>>> 17454bf (Add streamlit UI with multi backend LLM support)
     sources:
       - media
       - public
@@ -48,11 +44,7 @@ categories:
 
   social_media:
     enabled: true
-<<<<<<< HEAD
-    count: 20
-=======
     count: 5
->>>>>>> 17454bf (Add streamlit UI with multi backend LLM support)
     platforms:
       - twitter
       - reddit
@@ -81,11 +73,7 @@ categories:
 
   news_articles:
     enabled: true
-<<<<<<< HEAD
-    count: 20
-=======
     count: 5
->>>>>>> 17454bf (Add streamlit UI with multi backend LLM support)
     sources:
       - reuters
       - bloomberg
